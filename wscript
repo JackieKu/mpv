@@ -1035,6 +1035,10 @@ def configure(ctx):
         # of exported symbols via mpv.def.
         ctx.env.LINKFLAGS += ['-rdynamic']
 
+    if ctx.dependency_satisfied('static-build'):
+        ctx.env.LDFLAGS += ['-static']
+        ctx.env.SHLIB_MARKER = '-Wl,-Bstatic'
+
     ctx.store_dependencies_lists()
 
 def __write_version__(ctx):
