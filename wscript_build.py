@@ -193,6 +193,7 @@ def build(ctx):
         ( "input/ipc.c",                         "!mingw" ),
         ( "input/keycodes.c" ),
         ( "input/pipe-win32.c",                  "waio" ),
+        ( "input/lirc.c",                        "lirc" ),
 
         ## Misc
         ( "misc/bstr.c" ),
