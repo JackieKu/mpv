@@ -262,6 +262,7 @@ def build(ctx):
         ( ipc_c ),
         ( "input/keycodes.c" ),
         ( "input/pipe-win32.c",                  "win32-pipes" ),
+        ( "input/lirc.c",                        "lirc" ),
 
         ## Misc
         ( "misc/bstr.c" ),

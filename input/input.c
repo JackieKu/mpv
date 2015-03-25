@@ -176,6 +176,9 @@ struct input_opts {
     // Autorepeat config (be aware of mp_input_set_repeat_info())
     int ar_delay;
     int ar_rate;
+    int use_lirc;
+    char *lirc_configfile;
+    int use_lircc;
     int use_alt_gr;
     int use_appleremote;
     int use_media_keys;
@@ -201,6 +204,9 @@ const struct m_sub_options input_config = {
         OPT_FLAG("input-cursor", enable_mouse_movements, 0),
         OPT_FLAG("input-vo-keyboard", vo_key_input, 0),
         OPT_FLAG("input-media-keys", use_media_keys, 0),
+#if HAVE_LIRC
+        OPT_STRING("input-lirc-conf", lirc_configfile, M_OPT_FIXED | M_OPT_FILE),
+#endif
 #if HAVE_COCOA
         OPT_FLAG("input-appleremote", use_appleremote, 0),
 #endif
@@ -214,6 +220,7 @@ const struct m_sub_options input_config = {
         .doubleclick_time = 300,
         .ar_delay = 200,
         .ar_rate = 40,
+        .use_lirc = 1,
         .use_alt_gr = 1,
         .enable_mouse_movements = 1,
         .use_media_keys = 1,
@@ -1395,6 +1402,11 @@ void mp_input_load_config(struct input_ctx *ictx)
 #if HAVE_WIN32_PIPES
     if (ictx->global->opts->input_file && *ictx->global->opts->input_file)
         mp_input_pipe_add(ictx, ictx->global->opts->input_file);
+#endif
+
+#if HAVE_LIRC
+    if (ictx->opts->use_lirc)
+        mp_input_lirc_add(ictx, ictx->opts->lirc_configfile);
 #endif
 
     input_unlock(ictx);
